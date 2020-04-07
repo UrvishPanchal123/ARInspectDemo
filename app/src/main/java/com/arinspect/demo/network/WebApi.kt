@@ -7,5 +7,5 @@ import retrofit2.http.GET
 interface WebApi {
 
     @GET("facts.json")
-    fun getListData(): Single<List<DataModel>>
+    fun getListData(): Single<DataModel>
 }

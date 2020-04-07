@@ -5,6 +5,9 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.view.View
 import android.view.Window
 import android.widget.TextView
@@ -21,7 +24,7 @@ open class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     protected lateinit var mBinding: T
 
-    protected lateinit var progressDialog: Dialog
+    private lateinit var progressDialog: Dialog
 
     protected fun bindView(layoutId: Int) {
         mBinding = DataBindingUtil.setContentView(this, layoutId)
@@ -29,15 +32,15 @@ open class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     protected fun initToolbar(
         toolbar: Toolbar,
-        title: Int,
+        title: String,
         txtTitle: TextView,
         showBackButton: Boolean
     ) {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        if (title != 0)
-            txtTitle.text = getString(title)
+        if (title.isNotEmpty())
+            txtTitle.text = title
         else
             txtTitle.visibility = View.GONE
 
@@ -76,7 +79,8 @@ open class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         }
     }
 
-    /*protected fun isNetworkAvailable(context: Context): Boolean {
+    @SuppressLint("ObsoleteSdkInt")
+    protected fun isNetworkAvailable(context: Context): Boolean {
 
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -96,7 +100,7 @@ open class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
             val nwInfo = connectivityManager.activeNetworkInfo ?: return false
             return nwInfo.isConnected
         }
-    }*/
+    }
 
     protected fun displayShortToast(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

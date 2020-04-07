@@ -8,14 +8,14 @@ import io.reactivex.schedulers.Schedulers
 
 class DataRepository(private val webApi: WebApi) {
 
-    fun getDataFromServer(): Observable<List<DataModel>> {
+    fun getDataFromServer(): Observable<DataModel> {
 
         return Observable.create { emitter ->
             webApi.getListData()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    if (it.isNotEmpty()) {
+                    if (it != null) {
                         emitter.onNext(it)
                     }
                 }, {
